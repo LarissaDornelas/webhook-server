@@ -14,19 +14,11 @@ app.post('/webhook',  (req, res) => {
             console.log('err', err)
         }}
  )
-    fs.writeFile('metadata.html', req.body.metadata, (err, data) => {
-        if (err) {
-            console.log('err', err)
-        }}
- )
     res.sendStatus(200)
 })
 
 app.get('/', (_, res) => 
 res.sendFile('./webhook.html',{root: __dirname })
-)
-app.get('/metadata', (_, res) => 
-res.sendFile('./metadata.html',{root: __dirname })
 )
 
 app.listen(process.env.PORT)
