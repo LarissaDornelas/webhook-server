@@ -2,6 +2,7 @@ const express = require('express')
 const open = require('open')
 const fs = require('fs');
 const app = express()
+require('dotenv').config()
 
 app.use(express.json())
 
@@ -20,6 +21,6 @@ app.get('/', (_, res) =>
 res.sendFile('./webhook.html',{root: __dirname })
 )
 
-app.listen(3001)
-console.log('listening on 3001')
+app.listen(process.env.PORT)
+console.log(`listening on ${process.env.PORT}`)
 
