@@ -7,18 +7,21 @@ require('dotenv').config()
 app.use(express.json())
 
 
-app.post('/webhook',  (req, res) => {
+app.post('/webhook', (req, res) => {
     console.log(req.body.metadata)
-    fs.writeFile('webhook.html', req.body.html, (err, data) => {
+    fs.writeFile('webhook.html', `${req.body.html}
+    HEADERS: ${JSON.stringify(req.headers)}`, (err, data) => {
         if (err) {
             console.log('err', err)
-        }}
- )
+        }
+    }
+
+    )
     res.sendStatus(200)
 })
 
-app.get('/', (_, res) => 
-res.sendFile('./webhook.html',{root: __dirname })
+app.get('/', (_, res) =>
+    res.sendFile('./webhook.html', { root: __dirname })
 )
 
 app.listen(process.env.PORT)
