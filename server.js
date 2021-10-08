@@ -10,7 +10,7 @@ app.use(express.json())
 app.post('/webhook', (req, res) => {
     console.log(req.body.metadata)
     fs.writeFile('webhook.html', `
-    BODY: ${req.body}
+    BODY: ${JSON.stringify(req.body)}
     HEADERS: ${JSON.stringify(req.headers)}`, (err, data) => {
         if (err) {
             console.log('err', err)
