@@ -28,7 +28,7 @@ app.get("/", (_, res) => {
             console.log("err", err);
             res.sendStatus(500);
         }
-        res.send(jsonString).status(200);
+        res.send(JSON.parse(jsonString)).status(200);
     });
 });
 
