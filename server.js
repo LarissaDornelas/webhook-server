@@ -1,30 +1,36 @@
-const express = require('express')
-const open = require('open')
-const fs = require('fs');
-const app = express()
-require('dotenv').config()
+const express = require("express");
+const open = require("open");
+const fs = require("fs");
+const app = express();
+require("dotenv").config();
 
-app.use(express.json())
+app.use(express.json());
 
+app.post("/webhook", (req, res) => {
+    const { body, headers } = req;
 
-app.post('/webhook', (req, res) => {
-    console.log(req.body.metadata)
-    fs.writeFile('webhook.html', `
-    BODY: ${JSON.stringify(req.body)}
-    HEADERS: ${JSON.stringify(req.headers)}`, (err, data) => {
+    const jsonString = JSON.stringify({
+        body,
+        headers,
+    });
+
+    fs.writeFile("webhook.json", jsonString, (err) => {
         if (err) {
-            console.log('err', err)
+            console.log("err", err);
         }
-    }
+    });
+    res.sendStatus(200);
+});
 
-    )
-    res.sendStatus(200)
-})
+app.get("/", (_, res) => {
+    fs.readFile("./webhook.json", "utf8", (err, jsonString) => {
+        if (err) {
+            console.log("err", err);
+            res.sendStatus(500);
+        }
+        res.send(jsonString).sendStatus(200);
+    });
+});
 
-app.get('/', (_, res) =>
-    res.sendFile('./webhook.html', { root: __dirname })
-)
-
-app.listen(process.env.PORT)
-console.log(`listening on ${process.env.PORT}`)
-
+app.listen(process.env.PORT);
+console.log(`listening on ${process.env.PORT}`);
